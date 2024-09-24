@@ -10,11 +10,12 @@ import java.util.Date;
 public class Bookings {
     private SimpleIntegerProperty bookingId;
     private SimpleDateFormat bookingDate;
-    private SimpleStringProperty bookingNo;
-    private SimpleDoubleProperty travelerCount;
+    private final SimpleStringProperty bookingNo;
+    private final SimpleDoubleProperty travelerCount;
     private SimpleIntegerProperty customerId;
     private SimpleIntegerProperty packageId;
 
+    // Constructors
     public Bookings() {
         this.bookingId = new SimpleIntegerProperty();
         this.bookingDate = new SimpleDateFormat();
@@ -24,6 +25,18 @@ public class Bookings {
         this.packageId = new SimpleIntegerProperty();
     }
 
+    public Bookings(
+            SimpleStringProperty bookingNo,
+            SimpleDoubleProperty travelerCount,
+            SimpleDateFormat bookingDate)
+    {
+        this.bookingNo = bookingNo;
+        this.travelerCount = travelerCount;
+        this.bookingDate = bookingDate;
+    }
+
+
+    // Getters and Setters
     public int getBookingId() {
         return bookingId.get();
     }

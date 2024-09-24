@@ -7,19 +7,19 @@ import java.text.SimpleDateFormat;
 
 public class Invoice {
     // Invoice properties
-    private SimpleIntegerProperty invoiceId;
+    private final SimpleIntegerProperty invoiceId;
     private SimpleDateFormat invoiceDate;
 
     // Invoice Cost properties
-    private SimpleDoubleProperty fees;
-    private SimpleDoubleProperty total;
-    private SimpleDoubleProperty totalTax;
-    private SimpleDoubleProperty commissionTotal;
+    private final SimpleDoubleProperty fees;
+    private final SimpleDoubleProperty total;
+    private final SimpleDoubleProperty totalTax;
+    private final SimpleDoubleProperty commissionTotal;
 
     // Related properties
-    private SimpleIntegerProperty bookingDetailId;
-    private SimpleIntegerProperty customerId;
-    private SimpleIntegerProperty packageId;
+    private final SimpleIntegerProperty bookingDetailId;
+    private final SimpleIntegerProperty customerId;
+    private final SimpleIntegerProperty packageId;
 
     public Invoice() {
         this.invoiceId = new SimpleIntegerProperty();

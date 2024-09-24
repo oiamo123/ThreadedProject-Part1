@@ -4,17 +4,18 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Customers {
-    private SimpleIntegerProperty customerId;
-    private SimpleStringProperty custFirstName;
-    private SimpleStringProperty custLastName;
-    private SimpleStringProperty custAddress;
-    private SimpleStringProperty custCity;
-    private SimpleStringProperty custProv;
-    private SimpleStringProperty custPostal;
-    private SimpleStringProperty custCountry;
-    private SimpleStringProperty custHomePhone;
-    private SimpleStringProperty custBusPhone;
+    private final SimpleIntegerProperty customerId;
+    private final SimpleStringProperty custFirstName;
+    private final SimpleStringProperty custLastName;
+    private final SimpleStringProperty custAddress;
+    private final SimpleStringProperty custCity;
+    private final SimpleStringProperty custProv;
+    private final SimpleStringProperty custPostal;
+    private final SimpleStringProperty custCountry;
+    private final SimpleStringProperty custHomePhone;
+    private final SimpleStringProperty custBusPhone;
 
+    // Constructors
     public Customers() {
         this.customerId = new SimpleIntegerProperty();
         this.custFirstName = new SimpleStringProperty();
@@ -28,6 +29,8 @@ public class Customers {
         this.custBusPhone = new SimpleStringProperty();
     }
 
+
+    // Getters and Setters
     public int getCustomerId() {
         return customerId.get();
     }
