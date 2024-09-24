@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
+import util.dbHelper;
 
 import java.sql.Connection;
 
@@ -51,7 +52,7 @@ public class MainController {
         assert btnEdit != null : "fx:id=\"btnEdit\" was not injected: check your FXML file 'hello-view.fxml'.";
         assert tbvItems != null : "fx:id=\"tbvItems\" was not injected: check your FXML file 'hello-view.fxml'.";
 
-        Connection conn = ConnectionDB.getConnection();
+        Connection conn = dbHelper.getConnection();
         System.out.println("Connected to db");
     }
 }

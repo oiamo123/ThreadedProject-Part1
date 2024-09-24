@@ -17,6 +17,12 @@ public class TravelExpertsApplication extends Application {
         stage.show();
     }
 
+    /*
+    customers
+    bookings
+    booking details
+
+     */
     public static void main(String[] args) {
         launch();
     }
