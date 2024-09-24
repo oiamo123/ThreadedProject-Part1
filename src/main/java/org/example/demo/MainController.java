@@ -42,14 +42,14 @@ public class MainController {
 
     @FXML
     private void initialize() {
-        assert btn1 != null : "fx:id=\"btn1\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert btn2 != null : "fx:id=\"btn2\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert btn3 != null : "fx:id=\"btn3\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert btn4 != null : "fx:id=\"btn4\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert btnAdd != null : "fx:id=\"btnAdd\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert btnDelete != null : "fx:id=\"btnDelete\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert btnEdit != null : "fx:id=\"btnEdit\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert tbvItems != null : "fx:id=\"tbvItems\" was not injected: check your FXML file 'hello-view.fxml'.";
+        assert btn1 != null : "fx:id=\"btn1\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btn2 != null : "fx:id=\"btn2\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btn3 != null : "fx:id=\"btn3\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btn4 != null : "fx:id=\"btn4\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnAdd != null : "fx:id=\"btnAdd\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnDelete != null : "fx:id=\"btnDelete\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnEdit != null : "fx:id=\"btnEdit\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert tbvItems != null : "fx:id=\"tbvItems\" was not injected: check your FXML file 'main-view.fxml'.";
 
         Connection conn = ConnectionDB.getConnection();
         System.out.println("Connected to db");
