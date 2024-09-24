@@ -7,13 +7,14 @@ import java.util.Date;
 
 public class Packages {
     private SimpleIntegerProperty packageId;
-    private SimpleStringProperty pkgName;
+    private final SimpleStringProperty pkgName;
     private SimpleDateFormat pkgStartDate;
     private SimpleDateFormat pkgEndDate;
-    private SimpleStringProperty pkgDesc;
-    private SimpleDoubleProperty pkgBasePrice;
+    private final SimpleStringProperty pkgDesc;
+    private final SimpleDoubleProperty pkgBasePrice;
     private SimpleDoubleProperty pkgAgencyCommission;
 
+    // Constructors
     public Packages() {
         this.packageId = new SimpleIntegerProperty();
         this.pkgName = new SimpleStringProperty();
@@ -24,6 +25,18 @@ public class Packages {
         this.pkgAgencyCommission = new SimpleDoubleProperty();
     }
 
+    public Packages(
+            SimpleStringProperty pkgName,
+            SimpleStringProperty pkgDesc,
+            SimpleDoubleProperty pkgBasePrice
+           )
+    {
+        this.pkgName = pkgName;
+        this.pkgDesc = pkgDesc;
+        this.pkgBasePrice = pkgBasePrice;
+    }
+
+    // Getters and Setters
     public int getPackageId() {
         return packageId.get();
     }
@@ -79,4 +92,6 @@ public class Packages {
     public void setPkgAgencyCommission(int pkgAgencyCommission) {
         this.pkgAgencyCommission.set(pkgAgencyCommission);
     }
+
+    // Methods
 }
