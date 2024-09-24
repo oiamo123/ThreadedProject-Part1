@@ -32,7 +32,6 @@ public class Invoice {
         this.customerId = new SimpleIntegerProperty();
         this.packageId = new SimpleIntegerProperty();
     }
-
     // Getters and Setters
 
     public int getInvoiceId() {
