@@ -1,11 +1,12 @@
-package org.example.demo;
+package util;
+
+import org.example.demo.TravelExpertsApplication;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import java.util.Properties;
 
-public class ConnectionDB {
+public class dbHelper {
     public static Connection getConnection() {
         Connection conn = null;
 
@@ -35,5 +36,23 @@ public class ConnectionDB {
             throw new RuntimeException(err.getMessage());
         }
         return conn;
+    }
+
+    public static void prepareStatement(PreparedStatement stmt, Object... params) {
+        try {
+            for (int i = 0; i < params.length; i++) {
+                if (params[i] instanceof String) {
+                    stmt.setString(i + 1, (String) params[i]);
+                }
+                else if (params[i] instanceof Integer) {
+                    stmt.setInt(i + 1, (int) params[i]);
+                }
+                else if (params[i] instanceof Double) {
+                    stmt.setDouble(i + 1, (Double) params[i]);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
