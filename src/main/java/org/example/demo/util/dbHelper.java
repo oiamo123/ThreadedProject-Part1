@@ -1,4 +1,4 @@
-package util;
+package org.example.demo.util;
 
 import org.example.demo.TravelExpertsApplication;
 

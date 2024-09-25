@@ -1,7 +1,9 @@
-package util;
+package org.example.demo.util;
 
-public class BookingDetailsDB {
-    private void insert(BookingDetail bk) {
+import org.example.demo.models.Bookings;
+
+public class BookingsDB {
+    private void insert(Bookings booking) {
         try {
 
         } catch (Exception e) {
@@ -9,7 +11,7 @@ public class BookingDetailsDB {
         }
     }
 
-    private void delete(BookingDetail bk) {
+    private void delete(Bookings booking) {
         try {
 
         } catch (Exception e) {
@@ -17,7 +19,7 @@ public class BookingDetailsDB {
         }
     }
 
-    private void update(BookingDetail bk) {
+    private void update(Bookings booking) {
         try {
 
         } catch (Exception e) {
@@ -25,7 +27,7 @@ public class BookingDetailsDB {
         }
     }
 
-    private void getBookingDetails(BookingDetail bk) {
+    private void getBookings(Bookings booking) {
         try {
 
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package util;
+package org.example.demo.util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -72,7 +72,8 @@ public class InvoicesDB {
             Integer customerId = rs.getInt("customerId");
             Integer packageId = rs.getInt("packageId");
 
-            return new Invoice(invoiceId, invoiceDate, fees, total, tax, commission, bookingDetailsId, customerId, packageId);
+            // Create an overload if you want for this one
+//            return new Invoice(invoiceId, invoiceDate, fees, total, tax, commission, bookingDetailsId, customerId, packageId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
