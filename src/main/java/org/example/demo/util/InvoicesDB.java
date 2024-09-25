@@ -1,13 +1,10 @@
 package org.example.demo.util;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.demo.models.Invoice;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.Date;
 
 public class InvoicesDB {
     public static void insert(Invoice inv) {
@@ -40,44 +37,26 @@ public class InvoicesDB {
         }
     }
 
-    private ObservableList<Invoice> getInvoices() {
-        ObservableList<Invoice> invoices = FXCollections.observableArrayList();
-        try {
-            Statement stmt = dbHelper.getConnection().createStatement();
-            stmt.executeQuery("select * from invoices");
-            ResultSet rs = stmt.getResultSet();
-
-            while (rs.next()) {
-                Invoice inv = createInvoice(rs);
-                if (inv != null) {
-                    invoices.add(inv);
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return invoices;
+    public static ObservableList<Invoice> getInvoices() {
+        return dbHelper.getData("select * from invoices", InvoicesDB::formatInvoice);
     }
 
-    private Invoice createInvoice (ResultSet rs) {
+    private static Invoice formatInvoice (ResultSet rs) {
+        Invoice invoice = new Invoice();
         try {
-            Integer invoiceId = rs.getInt("invoiceId");
-            Date invoiceDate = rs.getDate("invoiceDate");
-            Double fees = rs.getDouble("fees");
-            Double total = rs.getDouble("total");
-            Double tax = rs.getDouble("totalTax");
-            Double commission = rs.getDouble("commissionTotal");
-            Integer bookingDetailsId = rs.getInt("bookingDetailsId");
-            Integer customerId = rs.getInt("customerId");
-            Integer packageId = rs.getInt("packageId");
-
-            // Create an overload if you want for this one
-//            return new Invoice(invoiceId, invoiceDate, fees, total, tax, commission, bookingDetailsId, customerId, packageId);
+            invoice.setInvoiceId(rs.getInt(1));
+            invoice.setInvoiceDate(rs.getDate(2));
+            invoice.setFees(rs.getDouble(3));
+            invoice.setTotal(rs.getDouble(4));
+            invoice.setTotalTax(rs.getDouble(5));
+            invoice.setCommissionTotal(rs.getDouble(6));
+            invoice.setBookingDetailId(rs.getInt(7));
+            invoice.setCustomerId(rs.getInt(8));
+            invoice.setPackageId(rs.getInt(9));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        return null;
+        return invoice;
     }
 }
