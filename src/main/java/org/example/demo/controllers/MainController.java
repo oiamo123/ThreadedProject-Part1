@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import org.example.demo.models.BookingDetails;
@@ -13,11 +14,9 @@ import org.example.demo.util.dbHelper;
 import java.sql.Connection;
 
 public class MainController {
-    @FXML
-    private ResourceBundle resources;
+    @FXML private ResourceBundle resources;
 
-    @FXML
-    private URL location;
+    @FXML private URL location;
 
     @FXML
     private TableColumn<BookingDetails, Double> colAgencyCommision;
@@ -73,7 +72,6 @@ public class MainController {
     @FXML
     private TableColumn<BookingDetails, Integer> colIteneraryNo;
 
-
     @FXML
     private TableColumn<BookingDetails, Integer> colPrice;
 
@@ -86,14 +84,17 @@ public class MainController {
     @FXML
     private TableColumn<BookingDetails, Date> colTripStart;
 
-    @FXML
-    private Tab tabBooking;
+    @FXML private Tab tabBooking;
 
-    @FXML
-    private Tab tabBookingDetail;
+    @FXML private Button btnDelete;
 
-    @FXML
-    private Tab tabCustomer;
+    @FXML private Button btnEdit;
+
+    @FXML private Button btnAdd;
+
+    @FXML private Tab tabBookingDetail;
+
+    @FXML private Tab tabCustomer;
 
     @FXML
     private void initialize() {
@@ -122,6 +123,9 @@ public class MainController {
         assert tabBooking != null : "fx:id=\"tabBooking\" was not injected: check your FXML file 'main-view.fxml'.";
         assert tabBookingDetail != null : "fx:id=\"tabBookingDetail\" was not injected: check your FXML file 'main-view.fxml'.";
         assert tabCustomer != null : "fx:id=\"tabCustomer\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnDelete != null : "fx:id=\"btnDelete\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnEdit != null : "fx:id=\"btnEdit\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert btnAdd != null : "fx:id=\"btnAdd\" was not injected: check your FXML file 'main-view.fxml'.";
 
         Connection conn = dbHelper.getConnection();
         System.out.println("Connected to db");
