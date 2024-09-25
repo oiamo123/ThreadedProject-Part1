@@ -1,12 +1,15 @@
 package org.example.demo.controllers;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
-import org.example.demo.ConnectionDB;
-
+import org.example.demo.models.BookingDetails;
+import org.example.demo.models.Bookings;
+import org.example.demo.models.Customers;
+import org.example.demo.util.dbHelper;
 import java.sql.Connection;
 
 public class MainController {
@@ -17,70 +20,71 @@ public class MainController {
     private URL location;
 
     @FXML
-    private TableColumn<?, ?> colAgencyCommision;
+    private TableColumn<BookingDetails, Double> colAgencyCommision;
 
     @FXML
-    private TableColumn<?, ?> colBookingDate;
+    private TableColumn<Bookings, Date> colBookingDate;
 
     @FXML
-    private TableColumn<?, ?> colBookingDetailID;
+    private TableColumn<BookingDetails, Integer> colBookingDetailID;
 
     @FXML
-    private TableColumn<?, ?> colBookingId;
+    private TableColumn<Bookings, Integer> colBookingId;
 
     @FXML
-    private TableColumn<?, ?> colBookingNo;
+    private TableColumn<Bookings, String> colBookingNo;
 
     @FXML
-    private TableColumn<?, ?> colCustAddress;
+    private TableColumn<Customers, ?> colCustAddress;
 
     @FXML
-    private TableColumn<?, ?> colCustBusPhone;
+    private TableColumn<Customers, String> colCustBusPhone;
 
     @FXML
-    private TableColumn<?, ?> colCustCity;
+    private TableColumn<Customers, String> colCustCity;
 
     @FXML
-    private TableColumn<?, ?> colCustCountry;
+    private TableColumn<Customers, String> colCustCountry;
 
     @FXML
-    private TableColumn<?, ?> colCustFirstName;
+    private TableColumn<Customers, String> colCustFirstName;
 
     @FXML
-    private TableColumn<?, ?> colCustHomePhone;
+    private TableColumn<Customers, String> colCustLastName;
 
     @FXML
-    private TableColumn<?, ?> colCustId;
+    private TableColumn<Customers, String> colCustHomePhone;
 
     @FXML
-    private TableColumn<?, ?> colCustPostal;
+    private TableColumn<Customers, Integer> colCustId;
 
     @FXML
-    private TableColumn<?, ?> colCustProv;
+    private TableColumn<Customers, String> colCustPostal;
 
     @FXML
-    private TableColumn<?, ?> colDesc;
+    private TableColumn<Customers, String> colCustProv;
 
     @FXML
-    private TableColumn<?, ?> colDestination;
+    private TableColumn<BookingDetails, String> colDesc;
 
     @FXML
-    private TableColumn<?, ?> colIteneraryNo;
+    private TableColumn<BookingDetails, String> colDestination;
 
     @FXML
-    private TableColumn<?, ?> colLastName;
+    private TableColumn<BookingDetails, Integer> colIteneraryNo;
+
 
     @FXML
-    private TableColumn<?, ?> colPrice;
+    private TableColumn<BookingDetails, Integer> colPrice;
 
     @FXML
-    private TableColumn<?, ?> colTravellerCount;
+    private TableColumn<BookingDetails, Integer> colTravellerCount;
 
     @FXML
-    private TableColumn<?, ?> colTripEnd;
+    private TableColumn<BookingDetails, Date> colTripEnd;
 
     @FXML
-    private TableColumn<?, ?> colTripStart;
+    private TableColumn<BookingDetails, Date> colTripStart;
 
     @FXML
     private Tab tabBooking;
@@ -103,6 +107,7 @@ public class MainController {
         assert colCustCity != null : "fx:id=\"colCustCity\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustCountry != null : "fx:id=\"colCustCountry\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustFirstName != null : "fx:id=\"colCustFirstName\" was not injected: check your FXML file 'main-view.fxml'.";
+        assert colCustLastName != null : "fx:id=\"colLastName\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustHomePhone != null : "fx:id=\"colCustHomePhone\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustId != null : "fx:id=\"colCustId\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colCustPostal != null : "fx:id=\"colCustPostal\" was not injected: check your FXML file 'main-view.fxml'.";
@@ -110,7 +115,6 @@ public class MainController {
         assert colDesc != null : "fx:id=\"colDesc\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colDestination != null : "fx:id=\"colDestination\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colIteneraryNo != null : "fx:id=\"colIteneraryNo\" was not injected: check your FXML file 'main-view.fxml'.";
-        assert colLastName != null : "fx:id=\"colLastName\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colPrice != null : "fx:id=\"colPrice\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colTravellerCount != null : "fx:id=\"colTravellerCount\" was not injected: check your FXML file 'main-view.fxml'.";
         assert colTripEnd != null : "fx:id=\"colTripEnd\" was not injected: check your FXML file 'main-view.fxml'.";
@@ -119,7 +123,7 @@ public class MainController {
         assert tabBookingDetail != null : "fx:id=\"tabBookingDetail\" was not injected: check your FXML file 'main-view.fxml'.";
         assert tabCustomer != null : "fx:id=\"tabCustomer\" was not injected: check your FXML file 'main-view.fxml'.";
 
-        Connection conn = ConnectionDB.getConnection();
+        Connection conn = dbHelper.getConnection();
         System.out.println("Connected to db");
     }
 }
