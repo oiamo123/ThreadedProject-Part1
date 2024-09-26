@@ -1,8 +1,10 @@
 package org.example.demo.util;
 
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.demo.TravelExpertsApplication;
+import org.example.demo.models.Id;
 
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -78,9 +80,9 @@ public class dbHelper {
         return data;
     }
 
-    public static void insertData(String table, Object obj) {
+    public static void insertData(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
-        StringBuilder query = new StringBuilder("INSERT INTO " + table + " (");
+        StringBuilder query = new StringBuilder("INSERT INTO " + obj.getClass().getSimpleName().toLowerCase() + " (");
         StringBuilder placeholders = new StringBuilder(") VALUES (");
         int fieldIndex = 1; // To track parameter index for PreparedStatement
 
@@ -89,24 +91,23 @@ public class dbHelper {
                 fields[i].setAccessible(true); // Make private fields accessible
 
                 // Assume the first field is the auto-generated ID and skip it
-                if (fields[i].getName().equalsIgnoreCase("id") || fields[i].get(obj) == null) {
-                    continue; // Skip ID or any null fields (if needed)
+                if (!fields[i].isAnnotationPresent(Id.class) || fields[i].get(obj) == null) {
+                    query.append(fields[i].getName());
+                    placeholders.append("?");
+
+                    if (i < fields.length - 1) {
+                        query.append(", ");
+                        placeholders.append(", ");
+                    }
+
+                    fieldIndex++; // Increment field index
                 }
-
-                query.append(fields[i].getName());
-                placeholders.append("?");
-
-                if (i < fields.length - 1) {
-                    query.append(", ");
-                    placeholders.append(", ");
-                }
-
-                fieldIndex++; // Increment field index
             }
 
             // Complete the query
             query.append(placeholders).append(")");
 
+            System.out.println(query.toString());
             // Prepare statement
             PreparedStatement stmt = dbHelper.getConnection().prepareStatement(query.toString());
             fieldIndex = 1; // Reset the index for prepared statement parameters
@@ -115,17 +116,95 @@ public class dbHelper {
                 fields[i].setAccessible(true); // Access the field
 
                 // Skip the ID field or null values
-                if (fields[i].getName().equalsIgnoreCase("id") || fields[i].get(obj) == null) {
-                    continue;
+                if (!fields[i].isAnnotationPresent(Id.class) || fields[i].get(obj) == null) {
+                    Object value = unwrapProperty(fields[i].get(obj));
+                    stmt.setObject(fieldIndex++, value);
                 }
-
-                // Set values dynamically for each field in the PreparedStatement
-                stmt.setObject(fieldIndex++, fields[i].get(obj));
             }
 
             stmt.executeUpdate(); // Execute the insertion
         } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    // not sure if this will work or not
+    public static void deleteData(Object obj) {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        StringBuilder query = new StringBuilder("DELETE FROM " + obj.getClass().getSimpleName().toLowerCase() + " WHERE ");
+
+        try {
+            fields[0].setAccessible(true);
+            query.append(fields[0].getName()).append("=?");
+
+            PreparedStatement stmt = dbHelper.getConnection().prepareStatement(query.toString());
+            stmt.setObject(1, unwrapProperty(fields[0].get(obj)));
+
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public static void updateData(Object obj) {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        StringBuilder query = new StringBuilder("UPDATE " + obj.getClass().getSimpleName().toLowerCase() + " SET ");
+        int fieldIndex = 1; // To track parameter index for PreparedStatement
+
+        try {
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true); // Make fields accessible
+
+                if (!fields[i].isAnnotationPresent(Id.class)) {
+                    query.append(fields[i].getName()).append(" = ?");
+                    if (i < fields.length - 1) {
+                        query.append(", ");
+                    }
+                }
+            }
+
+            // Append the WHERE clause
+            query.append(" WHERE ").append(fields[0].getName()).append(" = ?");
+
+            // Prepare the statement
+            PreparedStatement stmt = dbHelper.getConnection().prepareStatement(query.toString());
+
+            // Set values for the PreparedStatement
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true); // Access each field
+                Object value = unwrapProperty(fields[i]); // Get the value
+
+                // Set values for all fields except the ID first
+                if (!fields[i].isAnnotationPresent(Id.class)) {
+                    stmt.setObject(fieldIndex++, value);
+                }
+            }
+
+            stmt.setObject(fieldIndex, unwrapProperty(fields[0]));
+
+            stmt.executeUpdate(); // Execute the update
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Object unwrapProperty(Object fieldValue) {
+        if (fieldValue instanceof SimpleObjectProperty) {
+            return ((SimpleObjectProperty<?>) fieldValue).get();
+        } else if (fieldValue instanceof SimpleStringProperty) {
+            return ((SimpleStringProperty) fieldValue).get();
+        } else if (fieldValue instanceof SimpleIntegerProperty) {
+            return ((SimpleIntegerProperty) fieldValue).get();
+        } else if (fieldValue instanceof SimpleDoubleProperty) {
+            return ((SimpleDoubleProperty) fieldValue).get();
+        } else if (fieldValue instanceof SimpleFloatProperty) {
+            return ((SimpleFloatProperty) fieldValue).get();
+        } else if (fieldValue instanceof SimpleBooleanProperty) {
+            return ((SimpleBooleanProperty) fieldValue).get();
+        } else if (fieldValue instanceof SimpleLongProperty) {
+            return ((SimpleLongProperty) fieldValue).get();
+        }
+        // If it's not a SimpleXProperty, return the value as is
+        return fieldValue;
     }
 }

@@ -9,33 +9,15 @@ import java.sql.ResultSet;
 
 public class CustomerDB {
     public static void insert(Customers cust) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("insert into customers set (CustFirstName, CustLastName, CustAddress, CustCity, CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail, AgentId) values (?,?,?,?,?,?,?,?,?,?,?)");
-            dbHelper.prepareStatement(stmt, cust.getCustFirstName(), cust.getCustLastName(), cust.getCustAddress(), cust.getCustCity(), cust.getCustProv(), cust.getCustPostal(), cust.getCustCountry(), cust.getCustHomePhone(), cust.getCustBusPhone(), cust.getCustEmail(), cust.getAgentId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.insertData(cust);
     }
 
     public static void delete(Customers cust) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("delete from customers where customerId=?");
-            stmt.setInt(1, cust.getCustomerId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.deleteData(cust);
     }
 
     public static void update(Customers cust) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("updates customers set custFirstName=?, custLastName=?, custAddress=?, custCity=?, custProv=?, custPostal=?, custCountry=?, custHomePhone=?, custBusPhone=?, CustEmail=?, AgentId=? where customerId=?");
-            dbHelper.prepareStatement(stmt, cust.getCustFirstName(), cust.getCustLastName(), cust.getCustAddress(), cust.getCustCity(), cust.getCustProv(), cust.getCustPostal(), cust.getCustCountry(), cust.getCustHomePhone(), cust.getCustBusPhone(), cust.getCustomerId(), cust.getCustEmail(), cust.getAgentId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.updateData(cust);
     }
 
     public static ObservableList<Customers> getCustomers() {

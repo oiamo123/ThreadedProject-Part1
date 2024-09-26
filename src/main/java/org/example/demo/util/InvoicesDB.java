@@ -8,33 +8,15 @@ import java.sql.ResultSet;
 
 public class InvoicesDB {
     public static void insert(Invoice inv) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("insert into invoices set (invoiceDate, invoiceFees, invoiceTotal, invoiceTotalTax, invoiceCommisionTotal, bookingDetailId, customerId, packageId) values (?,?,?,?,?,?,?,?)");
-            dbHelper.prepareStatement(stmt, inv.getInvoiceDate(), inv.getFees(), inv.getTotal(), inv.getTotalTax(), inv.getCommissionTotal(), inv.getBookingDetailId(), inv.getCustomerId(), inv.getCustomerId(), inv.getPackageId());
-            stmt.executeUpdate();
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.insertData(inv);
     }
 
     public static void delete(Invoice inv) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("delete from invoices where invoiceId=?");
-            stmt.setInt(1, inv.getInvoiceId());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.deleteData(inv);
     }
 
     public static void update(Invoice inv) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("update invoices set where =?");
-            dbHelper.prepareStatement(stmt, inv.getInvoiceDate(), inv.getFees(), inv.getTotal(), inv.getTotalTax(), inv.getCommissionTotal(), inv.getBookingDetailId(), inv.getCustomerId(), inv.getCustomerId(), inv.getPackageId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.updateData(inv);
     }
 
     public static ObservableList<Invoice> getInvoices() {

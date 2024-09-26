@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Customers {
+    @Id
     private SimpleIntegerProperty CustomerId;
     private SimpleStringProperty CustFirstName;
     private SimpleStringProperty CustLastName;

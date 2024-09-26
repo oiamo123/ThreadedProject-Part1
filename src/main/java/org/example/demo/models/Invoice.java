@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class Invoice {
     // Invoice properties
+    @Id
     private SimpleIntegerProperty invoiceId;
     private SimpleDateFormat invoiceDate;
 

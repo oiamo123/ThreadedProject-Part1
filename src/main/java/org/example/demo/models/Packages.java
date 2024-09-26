@@ -6,23 +6,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Packages {
-    private SimpleIntegerProperty packageId;
-    private final SimpleStringProperty pkgName;
-    private SimpleDateFormat pkgStartDate;
-    private SimpleDateFormat pkgEndDate;
-    private final SimpleStringProperty pkgDesc;
-    private final SimpleDoubleProperty pkgBasePrice;
-    private SimpleDoubleProperty pkgAgencyCommission;
+    @Id
+    private SimpleIntegerProperty PackageId;
+    private final SimpleStringProperty PkgName;
+    private SimpleDateFormat PkgStartDate;
+    private SimpleDateFormat PkgEndDate;
+    private final SimpleStringProperty PkgDesc;
+    private final SimpleDoubleProperty PkgBasePrice;
+    private SimpleDoubleProperty PkgAgencyCommission;
 
     // Constructors
     public Packages() {
-        this.packageId = new SimpleIntegerProperty();
-        this.pkgName = new SimpleStringProperty();
-        this.pkgStartDate = new SimpleDateFormat();
-        this.pkgEndDate = new SimpleDateFormat();
-        this.pkgDesc = new SimpleStringProperty();
-        this.pkgBasePrice = new SimpleDoubleProperty();
-        this.pkgAgencyCommission = new SimpleDoubleProperty();
+        this.PackageId = new SimpleIntegerProperty();
+        this.PkgName = new SimpleStringProperty();
+        this.PkgStartDate = new SimpleDateFormat();
+        this.PkgEndDate = new SimpleDateFormat();
+        this.PkgDesc = new SimpleStringProperty();
+        this.PkgBasePrice = new SimpleDoubleProperty();
+        this.PkgAgencyCommission = new SimpleDoubleProperty();
     }
 
     public Packages(
@@ -31,66 +32,66 @@ public class Packages {
             SimpleDoubleProperty pkgBasePrice
            )
     {
-        this.pkgName = pkgName;
-        this.pkgDesc = pkgDesc;
-        this.pkgBasePrice = pkgBasePrice;
+        this.PkgName = pkgName;
+        this.PkgDesc = pkgDesc;
+        this.PkgBasePrice = pkgBasePrice;
     }
 
     // Getters and Setters
     public int getPackageId() {
-        return packageId.get();
+        return PackageId.get();
     }
 
     public void setPackageId(int packageId) {
-        this.packageId.set(packageId);
+        this.PackageId.set(packageId);
     }
 
     public String getPkgName() {
-        return pkgName.get();
+        return PkgName.get();
     }
 
     public void setPkgName(String pkgName) {
-        this.pkgName.set(pkgName);
+        this.PkgName.set(pkgName);
     }
 
     public String getPkgStartDate() {
-        return pkgStartDate.format(new Date());
+        return PkgStartDate.format(new Date());
     }
 
     public void setPkgStartDate(Date pkgStartDate) {
-        this.pkgStartDate = new SimpleDateFormat("yyyy-MM-dd");
+        this.PkgStartDate = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     public String getPkgEndDate() {
-        return pkgEndDate.format(new Date());
+        return PkgEndDate.format(new Date());
     }
 
     public void setPkgEndDate(Date pkgEndDate) {
-        this.pkgEndDate = new SimpleDateFormat("yyyy-MM-dd");
+        this.PkgEndDate = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     public String getPkgDesc() {
-        return pkgDesc.get();
+        return PkgDesc.get();
     }
 
     public void setPkgDesc(String pkgDesc) {
-        this.pkgDesc.set(pkgDesc);
+        this.PkgDesc.set(pkgDesc);
     }
 
     public double getPkgBasePrice() {
-        return pkgBasePrice.get();
+        return PkgBasePrice.get();
     }
 
     public void setPkgBasePrice(int pkgBasePrice) {
-        this.pkgBasePrice.set(pkgBasePrice);
+        this.PkgBasePrice.set(pkgBasePrice);
     }
 
     public double getPkgAgencyCommission() {
-        return pkgAgencyCommission.get();
+        return PkgAgencyCommission.get();
     }
 
     public void setPkgAgencyCommission(int pkgAgencyCommission) {
-        this.pkgAgencyCommission.set(pkgAgencyCommission);
+        this.PkgAgencyCommission.set(pkgAgencyCommission);
     }
 
     // Methods

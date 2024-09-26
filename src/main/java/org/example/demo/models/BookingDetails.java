@@ -2,16 +2,18 @@ package org.example.demo.models;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BookingDetails {
+    @Id
     private SimpleIntegerProperty BookingDetailId;
     private SimpleIntegerProperty ItineraryNo;
-    private SimpleDateFormat TripStart;
-    private SimpleDateFormat TripEnd;
+    private SimpleObjectProperty<Date> TripStart;
+    private SimpleObjectProperty<Date> TripEnd;
     private SimpleStringProperty Description;
     private SimpleStringProperty Destination;
     private SimpleDoubleProperty BasePrice;
@@ -26,8 +28,8 @@ public class BookingDetails {
     public BookingDetails() {
         this.BookingDetailId = new SimpleIntegerProperty();
         this.ItineraryNo = new SimpleIntegerProperty();
-        this.TripStart = new SimpleDateFormat();
-        this.TripEnd = new SimpleDateFormat();
+        this.TripStart = new SimpleObjectProperty<>();
+        this.TripEnd = new SimpleObjectProperty<>();
         this.Description = new SimpleStringProperty();
         this.Destination = new SimpleStringProperty();
         this.BasePrice = new SimpleDoubleProperty();
@@ -51,18 +53,6 @@ public class BookingDetails {
         this.Destination = destination;
         this.BasePrice = basePrice;
         this.AgencyCommission = agencyCommission;
-    }
-
-    public int getBookingId() {
-        return BookingId.get();
-    }
-
-    public SimpleIntegerProperty bookingIdProperty() {
-        return BookingId;
-    }
-
-    public void setBookingId(int bookingId) {
-        this.BookingId.set(bookingId);
     }
 
     public int getBookingDetailId() {
@@ -89,18 +79,28 @@ public class BookingDetails {
         this.ItineraryNo.set(itineraryNo);
     }
 
-    public SimpleDateFormat getTripStart() { return TripStart; }
-
-    public void setTripStart(Date tripStart) {
-        TripStart.format(tripStart);
+    public Date getTripStart() {
+        return TripStart.get();
     }
 
-    public SimpleDateFormat getTripEnd() {
+    public SimpleObjectProperty<Date> tripStartProperty() {
+        return TripStart;
+    }
+
+    public void setTripStart(Date tripStart) {
+        this.TripStart.set(tripStart);
+    }
+
+    public Date getTripEnd() {
+        return TripEnd.get();
+    }
+
+    public SimpleObjectProperty<Date> tripEndProperty() {
         return TripEnd;
     }
 
     public void setTripEnd(Date tripEnd) {
-        TripEnd.format(tripEnd);
+        this.TripEnd.set(tripEnd);
     }
 
     public String getDescription() {
@@ -151,6 +151,18 @@ public class BookingDetails {
         this.AgencyCommission.set(agencyCommission);
     }
 
+    public int getBookingId() {
+        return BookingId.get();
+    }
+
+    public SimpleIntegerProperty bookingIdProperty() {
+        return BookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.BookingId.set(bookingId);
+    }
+
     public String getRegionId() {
         return RegionId.get();
     }
@@ -198,6 +210,4 @@ public class BookingDetails {
     public void setProductSupplierId(int productSupplierId) {
         this.ProductSupplierId.set(productSupplierId);
     }
-
-
 }

@@ -9,33 +9,15 @@ import java.sql.SQLException;
 
 public class BookingDetailsDB {
     public static void insert(BookingDetails bk) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("insert into bookingdetails set (ItineraryNo, TripStart, TripEnd, Description, BasePrice, AgencyCommission, BookingId, RegionId, ClassId, FeeId, ProductSupplierId) values (?,?,?,?,?,?,?,?,?,?,?,?)");
-            dbHelper.prepareStatement(stmt, bk.getItineraryNo(), bk.getTripStart(), bk.getTripEnd(), bk.getDescription(), bk.getBasePrice(), bk.getAgencyCommission(), bk.getBookingId(), bk.getRegionId(), bk.getClassId(), bk.getFeeId(), bk.getProductSupplierId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            dbHelper.insertData(bk);
     }
 
     public static void delete(BookingDetails bk) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("delete from bookingdetails where BookingId = ?");
-            stmt.setInt(1, bk.getBookingId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.deleteData(bk);
     }
 
     public static void update(BookingDetails bk) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("update bookingdetails set ItineraryNo, TripStart, TripEnd, Description, BasePrice, AgencyCommission, BookingId, RegionId, ClassId, FeeId, ProductSupplierId where BookingDetailId = ?");
-            stmt.setInt(1, bk.getBookingId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.updateData(bk);
     }
 
     public static ObservableList<BookingDetails> getBookingDetails() {

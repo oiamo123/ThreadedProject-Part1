@@ -1,6 +1,7 @@
 package org.example.demo.controllers;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.control.TableColumn;
 import org.example.demo.models.BookingDetails;
 import org.example.demo.models.Bookings;
 import org.example.demo.models.Customers;
+import org.example.demo.util.BookingsDB;
 import org.example.demo.util.dbHelper;
 import java.sql.Connection;
 
@@ -129,5 +131,27 @@ public class MainController {
 
         Connection conn = dbHelper.getConnection();
         System.out.println("Connected to db");
+
+        try {
+            Bookings booking = new Bookings();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date date = sdf.parse("2024-01-01");
+
+            booking.setBookingDate(date);
+            booking.setBookingNo("123456");
+            booking.setTravelerCount(2);
+            booking.setCustomerId(158);
+            booking.setTripTypeId("B");
+            booking.setPackageId(1);
+
+            System.out.println(booking.getCustomerId());
+
+            BookingsDB.insert(booking);
+        System.out.println("Inserted booking");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

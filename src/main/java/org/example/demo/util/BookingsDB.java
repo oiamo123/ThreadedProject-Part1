@@ -1,43 +1,21 @@
-package util;
+package org.example.demo.util;
 import javafx.collections.ObservableList;
 import org.example.demo.models.Bookings;
-import org.example.demo.util.dbHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class BookingsDB {
     public static void insert(Bookings booking) {
-        dbHelper.insertData("bookings", booking);
-
-//        try {
-//            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("insert into bookings set (BookingDate, BookingNo, TravelerCount, CustomerId, TripTypeId, PackageId) values (?, ?, ?, ?, ?, ?)");
-//            dbHelper.prepareStatement(stmt, booking.getBookingDate(), booking.getBookingNo(), booking.getTravelerCount(), booking.getCustomerId(), booking.getTripTypeId(), booking.getPackageId());
-//            stmt.executeUpdate();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-
+        dbHelper.insertData(booking);
     }
 
     public static void delete(Bookings booking) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("delete from bookings where bookingID = ?");
-            stmt.setInt(1, booking.getBookingId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.deleteData(booking);
     }
 
     public static void update(Bookings booking) {
-        try {
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement("update bookings set BookingDate=?, BookingNo=?, TravelerCount=?, CustomerId=?, TripTypeId=?, PackageId=? where BookingId=?");
-            dbHelper.prepareStatement(stmt, booking.getBookingDate(), booking.getBookingNo(), booking.getTravelerCount(), booking.getCustomerId(), booking.getTripTypeId(), booking.getPackageId());
-            stmt.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        dbHelper.updateData(booking);
     }
 
     public static ObservableList<Bookings> getBookings() {

@@ -2,16 +2,20 @@ package org.example.demo.models;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.util.converter.LocalDateStringConverter;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Bookings {
+    @Id
     private SimpleIntegerProperty BookingId;
-    private SimpleDateFormat BookingDate;
-    private final SimpleStringProperty BookingNo;
-    private final SimpleDoubleProperty TravelerCount;
+    private SimpleObjectProperty<Date> BookingDate;
+    private SimpleStringProperty BookingNo;
+    private SimpleDoubleProperty TravelerCount;
     private SimpleIntegerProperty CustomerId;
     private SimpleStringProperty TripTypeId;
     private SimpleIntegerProperty PackageId;
@@ -19,7 +23,7 @@ public class Bookings {
     // Constructors
     public Bookings() {
         this.BookingId = new SimpleIntegerProperty();
-        this.BookingDate = new SimpleDateFormat();
+        this.BookingDate = new SimpleObjectProperty<>();
         this.BookingNo = new SimpleStringProperty();
         this.TravelerCount = new SimpleDoubleProperty();
         this.CustomerId = new SimpleIntegerProperty();
@@ -30,7 +34,7 @@ public class Bookings {
     public Bookings(
             SimpleStringProperty bookingNo,
             SimpleDoubleProperty travelerCount,
-            SimpleDateFormat bookingDate)
+            SimpleObjectProperty<Date> bookingDate)
     {
         this.BookingNo = bookingNo;
         this.TravelerCount = travelerCount;
@@ -49,12 +53,16 @@ public class Bookings {
         this.BookingId.set(bookingId);
     }
 
-    public SimpleDateFormat getBookingDate() {
-        return BookingDate;
+    public Date getBookingDate() {
+        return BookingDate.get();
     }
 
-    public void setBookingDate(SimpleDateFormat bookingDate) {
-        BookingDate = bookingDate;
+    public void setBookingDate(Date bookingDate) {
+        this.BookingDate.set(bookingDate);
+    }
+
+    public SimpleObjectProperty<Date> bookingDateProperty() {
+        return BookingDate;
     }
 
     public String getBookingNo() {
@@ -65,12 +73,20 @@ public class Bookings {
         return BookingNo;
     }
 
+    public void setBookingNo(String bookingNo) {
+        this.BookingNo.set(bookingNo);
+    }
+
     public double getTravelerCount() {
         return TravelerCount.get();
     }
 
     public SimpleDoubleProperty travelerCountProperty() {
         return TravelerCount;
+    }
+
+    public void setTravelerCount(double travelerCount) {
+        this.TravelerCount.set(travelerCount);
     }
 
     public int getCustomerId() {
