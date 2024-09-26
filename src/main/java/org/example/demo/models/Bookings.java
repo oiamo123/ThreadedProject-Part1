@@ -8,21 +8,23 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Bookings {
-    private SimpleIntegerProperty bookingId;
-    private SimpleDateFormat bookingDate;
-    private final SimpleStringProperty bookingNo;
-    private final SimpleDoubleProperty travelerCount;
-    private SimpleIntegerProperty customerId;
-    private SimpleIntegerProperty packageId;
+    private SimpleIntegerProperty BookingId;
+    private SimpleDateFormat BookingDate;
+    private final SimpleStringProperty BookingNo;
+    private final SimpleDoubleProperty TravelerCount;
+    private SimpleIntegerProperty CustomerId;
+    private SimpleStringProperty TripTypeId;
+    private SimpleIntegerProperty PackageId;
 
     // Constructors
     public Bookings() {
-        this.bookingId = new SimpleIntegerProperty();
-        this.bookingDate = new SimpleDateFormat();
-        this.bookingNo = new SimpleStringProperty();
-        this.travelerCount = new SimpleDoubleProperty();
-        this.customerId = new SimpleIntegerProperty();
-        this.packageId = new SimpleIntegerProperty();
+        this.BookingId = new SimpleIntegerProperty();
+        this.BookingDate = new SimpleDateFormat();
+        this.BookingNo = new SimpleStringProperty();
+        this.TravelerCount = new SimpleDoubleProperty();
+        this.CustomerId = new SimpleIntegerProperty();
+        this.TripTypeId = new SimpleStringProperty();
+        this.PackageId = new SimpleIntegerProperty();
     }
 
     public Bookings(
@@ -30,50 +32,80 @@ public class Bookings {
             SimpleDoubleProperty travelerCount,
             SimpleDateFormat bookingDate)
     {
-        this.bookingNo = bookingNo;
-        this.travelerCount = travelerCount;
-        this.bookingDate = bookingDate;
+        this.BookingNo = bookingNo;
+        this.TravelerCount = travelerCount;
+        this.BookingDate = bookingDate;
     }
 
-
-    // Getters and Setters
     public int getBookingId() {
-        return bookingId.get();
+        return BookingId.get();
+    }
+
+    public SimpleIntegerProperty bookingIdProperty() {
+        return BookingId;
     }
 
     public void setBookingId(int bookingId) {
-        this.bookingId.set(bookingId);
+        this.BookingId.set(bookingId);
     }
 
-    public String getBookingDate() {
-        return bookingDate.format(new Date());
+    public SimpleDateFormat getBookingDate() {
+        return BookingDate;
     }
 
-    public void setBookingDate(Date bookingDate) {
-        this.bookingDate = new SimpleDateFormat("yyyy-MM-dd");
+    public void setBookingDate(SimpleDateFormat bookingDate) {
+        BookingDate = bookingDate;
     }
 
     public String getBookingNo() {
-        return bookingNo.get();
+        return BookingNo.get();
     }
 
-    public void setBookingNo(String bookingNo) {
-        this.bookingNo.set(bookingNo);
+    public SimpleStringProperty bookingNoProperty() {
+        return BookingNo;
     }
 
     public double getTravelerCount() {
-        return travelerCount.get();
+        return TravelerCount.get();
     }
 
-    public void setTravelerCount(double travelerCount) {
-        this.travelerCount.set(travelerCount);
+    public SimpleDoubleProperty travelerCountProperty() {
+        return TravelerCount;
     }
 
     public int getCustomerId() {
-        return customerId.get();
+        return CustomerId.get();
+    }
+
+    public SimpleIntegerProperty customerIdProperty() {
+        return CustomerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.CustomerId.set(customerId);
+    }
+
+    public String getTripTypeId() {
+        return TripTypeId.get();
+    }
+
+    public SimpleStringProperty tripTypeIdProperty() {
+        return TripTypeId;
+    }
+
+    public void setTripTypeId(String tripTypeId) {
+        this.TripTypeId.set(tripTypeId);
     }
 
     public int getPackageId() {
-        return packageId.get();
+        return PackageId.get();
+    }
+
+    public SimpleIntegerProperty packageIdProperty() {
+        return PackageId;
+    }
+
+    public void setPackageId(int packageId) {
+        this.PackageId.set(packageId);
     }
 }

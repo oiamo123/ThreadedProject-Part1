@@ -1,15 +1,11 @@
-package util;
+package org.example.demo.util;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.demo.models.BookingDetails;
-import org.example.demo.util.dbHelper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class BookingDetailsDB {
     public static void insert(BookingDetails bk) {
