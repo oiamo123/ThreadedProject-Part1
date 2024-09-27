@@ -9,19 +9,44 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BookingDetails {
+    @Column(name="ID")
     @Id
     private SimpleIntegerProperty BookingDetailId;
+
+    @Column(name="Itenerary No")
     private SimpleIntegerProperty ItineraryNo;
+
+    @Column(name="Trip Start")
     private SimpleObjectProperty<Date> TripStart;
+
+    @Column(name="Trip End")
     private SimpleObjectProperty<Date> TripEnd;
+
+    @Column(name="Description")
     private SimpleStringProperty Description;
+
+    @Column(name="Destination")
     private SimpleStringProperty Destination;
+
+    @Column(name="Price")
     private SimpleDoubleProperty BasePrice;
+
+    @Column(name="Commission")
     private SimpleDoubleProperty AgencyCommission;
+
+    @Column(name="Booking ID")
     private SimpleIntegerProperty BookingId;
+
+    @Column(name="Region")
     private SimpleStringProperty RegionId;
+
+    @Column(name="Class")
     private SimpleStringProperty ClassId;
+
+    @Column(name="Fee")
     private SimpleStringProperty FeeId;
+
+    @Column(name="Product Supplier")
     private SimpleIntegerProperty ProductSupplierId;
 
     // Constructors

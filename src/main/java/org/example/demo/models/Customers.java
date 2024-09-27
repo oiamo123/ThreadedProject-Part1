@@ -5,17 +5,40 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Customers {
     @Id
+    @Column(name="Customer ID")
     private SimpleIntegerProperty CustomerId;
+
+    @Column(name="First Name")
     private SimpleStringProperty CustFirstName;
+
+    @Column(name="Last Name")
     private SimpleStringProperty CustLastName;
+
+    @Column(name="Address")
     private SimpleStringProperty CustAddress;
+
+    @Column(name="City")
     private SimpleStringProperty CustCity;
+
+    @Column(name="Province")
     private SimpleStringProperty CustProv;
+
+    @Column(name="Postal")
     private SimpleStringProperty CustPostal;
+
+    @Column(name="Country")
     private SimpleStringProperty CustCountry;
+
+    @Column(name="Home Phone")
     private SimpleStringProperty CustHomePhone;
+
+    @Column(name="Business Phone")
     private SimpleStringProperty CustBusPhone;
+
+    @Column(name="Email")
     private SimpleStringProperty CustEmail;
+
+    @Column(name="Agent")
     private SimpleIntegerProperty AgentId;
 
     // Constructors

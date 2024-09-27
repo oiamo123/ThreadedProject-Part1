@@ -1,10 +1,8 @@
-package util;
+package org.example.demo.util;
 
 import javafx.collections.ObservableList;
 import org.example.demo.models.Customers;
-import org.example.demo.util.dbHelper;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class CustomerDB {
