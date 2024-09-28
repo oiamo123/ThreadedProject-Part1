@@ -24,7 +24,7 @@ public class dbHelper {
         String uri;
 
         try {
-            InputStream file = TravelExpertsApplication.class.getResourceAsStream("config.properties");
+            InputStream file = TravelExpertsApplication.class.getResourceAsStream("/config.properties");
             Properties prop = new Properties();
             prop.load(file);
 
