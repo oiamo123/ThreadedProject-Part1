@@ -2,25 +2,24 @@ package org.example.demo.services;
 
 import javafx.collections.ObservableList;
 import org.example.demo.models.Invoice;
-import org.example.demo.util.dbHelper;
 
 import java.sql.ResultSet;
 
 public class InvoicesService {
     public static void insert(Invoice inv) {
-        dbHelper.insertData(inv);
+        dbService.insertData(inv);
     }
 
     public static void delete(Invoice inv) {
-        dbHelper.deleteData(inv);
+        dbService.deleteData(inv);
     }
 
     public static void update(Invoice inv) {
-        dbHelper.updateData(inv);
+        dbService.updateData(inv);
     }
 
     public static ObservableList<Invoice> getInvoices() {
-        return dbHelper.getData("select * from invoices", InvoicesService::formatInvoice);
+        return dbService.getData("select * from invoices", InvoicesService::formatInvoice);
     }
 
     private static Invoice formatInvoice (ResultSet rs) {

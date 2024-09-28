@@ -2,25 +2,24 @@ package org.example.demo.services;
 
 import javafx.collections.ObservableList;
 import org.example.demo.models.Customers;
-import org.example.demo.util.dbHelper;
 
 import java.sql.ResultSet;
 
 public class CustomerService {
     public static void insert(Customers cust) {
-        dbHelper.insertData(cust);
+        dbService.insertData(cust);
     }
 
     public static void delete(Customers cust) {
-        dbHelper.deleteData(cust);
+        dbService.deleteData(cust);
     }
 
     public static void update(Customers cust) {
-        dbHelper.updateData(cust);
+        dbService.updateData(cust);
     }
 
     public static ObservableList<Customers> getCustomers() {
-        return dbHelper.getData("select * from customers", CustomerService::formatCustomer);
+        return dbService.getData("select * from customers", CustomerService::formatCustomer);
     }
 
     private static Customers formatCustomer(ResultSet rs) {

@@ -1,4 +1,4 @@
-package org.example.demo.util;
+package org.example.demo.services;
 
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -7,14 +7,13 @@ import org.example.demo.TravelExpertsApplication;
 import org.example.demo.models.Id;
 
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.Date;
 import java.util.Properties;
 import java.util.function.Function;
 
-public class dbHelper {
+public class dbService {
     public static Connection getConnection() {
         Connection conn = null;
 
@@ -70,7 +69,7 @@ public class dbHelper {
     public static <T> ObservableList<T> getData(String query, Function<ResultSet, T> formatter) {
         ObservableList<T> data = FXCollections.observableArrayList();
         try {
-            Statement stmt = dbHelper.getConnection().createStatement();
+            Statement stmt = dbService.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 data.add(formatter.apply(rs));
@@ -110,7 +109,7 @@ public class dbHelper {
 
             System.out.println(query.toString());
             // Prepare statement
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement(query.toString());
+            PreparedStatement stmt = dbService.getConnection().prepareStatement(query.toString());
             fieldIndex = 1; // Reset the index for prepared statement parameters
 
             for (int i = 0; i < fields.length; i++) {
@@ -138,7 +137,7 @@ public class dbHelper {
             fields[0].setAccessible(true);
             query.append(fields[0].getName()).append("=?");
 
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement(query.toString());
+            PreparedStatement stmt = dbService.getConnection().prepareStatement(query.toString());
             stmt.setObject(1, unwrapProperty(fields[0].get(obj)));
 
             stmt.executeUpdate();
@@ -168,7 +167,7 @@ public class dbHelper {
             query.append(" WHERE ").append(fields[0].getName()).append(" = ?");
 
             // Prepare the statement
-            PreparedStatement stmt = dbHelper.getConnection().prepareStatement(query.toString());
+            PreparedStatement stmt = dbService.getConnection().prepareStatement(query.toString());
 
             // Set values for the PreparedStatement
             for (int i = 0; i < fields.length; i++) {
