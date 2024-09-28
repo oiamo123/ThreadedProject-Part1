@@ -1,12 +1,12 @@
-package org.example.demo.util;
+package org.example.demo.services;
 
 import javafx.collections.ObservableList;
 import org.example.demo.models.Invoice;
+import org.example.demo.util.dbHelper;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class InvoicesDB {
+public class InvoicesService {
     public static void insert(Invoice inv) {
         dbHelper.insertData(inv);
     }
@@ -20,7 +20,7 @@ public class InvoicesDB {
     }
 
     public static ObservableList<Invoice> getInvoices() {
-        return dbHelper.getData("select * from invoices", InvoicesDB::formatInvoice);
+        return dbHelper.getData("select * from invoices", InvoicesService::formatInvoice);
     }
 
     private static Invoice formatInvoice (ResultSet rs) {

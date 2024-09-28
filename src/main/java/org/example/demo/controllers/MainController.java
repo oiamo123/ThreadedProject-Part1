@@ -18,9 +18,9 @@ import org.example.demo.models.BookingDetails;
 import org.example.demo.models.Bookings;
 import org.example.demo.models.Column;
 import org.example.demo.models.Customers;
-import org.example.demo.util.BookingDetailsDB;
-import org.example.demo.util.BookingsDB;
-import org.example.demo.util.CustomerDB;
+import org.example.demo.services.BookingDetailsService;
+import org.example.demo.services.BookingsService;
+import org.example.demo.services.CustomerService;
 
 public class MainController {
 
@@ -117,7 +117,7 @@ public class MainController {
             public void handle(Event event) {
                 if (tabBooking.isSelected()) {
                     createColumns(new Bookings(), tvBookings);
-                    ObservableList<Bookings> data = BookingsDB.getBookings();
+                    ObservableList<Bookings> data = BookingsService.getBookings();
                     tvBookings.setItems(data);
                 }
             }
@@ -128,7 +128,7 @@ public class MainController {
             public void handle(Event event) {
                 if (tabCustomer.isSelected()) {
                     createColumns(new Customers(), tvCustomers);
-                    ObservableList<Customers> data = CustomerDB.getCustomers();
+                    ObservableList<Customers> data = CustomerService.getCustomers();
                     tvCustomers.setItems(data);
                 }
             }
@@ -139,7 +139,7 @@ public class MainController {
             public void handle(Event event) {
                 if (tabBookingDetail.isSelected()) {
                     createColumns(new BookingDetails(), tvBookingDetails);
-                    ObservableList<BookingDetails> data = BookingDetailsDB.getBookingDetails();
+                    ObservableList<BookingDetails> data = BookingDetailsService.getBookingDetails();
                     tvBookingDetails.setItems(data);
                 }
             }

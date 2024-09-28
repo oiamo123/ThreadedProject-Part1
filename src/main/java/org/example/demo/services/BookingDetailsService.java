@@ -1,13 +1,13 @@
-package org.example.demo.util;
+package org.example.demo.services;
 
 import javafx.collections.ObservableList;
 import org.example.demo.models.BookingDetails;
+import org.example.demo.util.dbHelper;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BookingDetailsDB {
+public class BookingDetailsService {
     public static void insert(BookingDetails bk) {
             dbHelper.insertData(bk);
     }
@@ -21,7 +21,7 @@ public class BookingDetailsDB {
     }
 
     public static ObservableList<BookingDetails> getBookingDetails() {
-        return dbHelper.getData("select * from bookingdetails", BookingDetailsDB::formatBookingDetails);
+        return dbHelper.getData("select * from bookingdetails", BookingDetailsService::formatBookingDetails);
     }
 
     private static BookingDetails formatBookingDetails(ResultSet rs) {

@@ -1,6 +1,5 @@
 package org.example.demo.util;
 
-import com.mysql.cj.xdevapi.Column;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

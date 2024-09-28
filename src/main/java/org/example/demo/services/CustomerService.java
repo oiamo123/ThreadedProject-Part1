@@ -1,11 +1,12 @@
-package org.example.demo.util;
+package org.example.demo.services;
 
 import javafx.collections.ObservableList;
 import org.example.demo.models.Customers;
+import org.example.demo.util.dbHelper;
 
 import java.sql.ResultSet;
 
-public class CustomerDB {
+public class CustomerService {
     public static void insert(Customers cust) {
         dbHelper.insertData(cust);
     }
@@ -19,7 +20,7 @@ public class CustomerDB {
     }
 
     public static ObservableList<Customers> getCustomers() {
-        return dbHelper.getData("select * from customers", CustomerDB::formatCustomer);
+        return dbHelper.getData("select * from customers", CustomerService::formatCustomer);
     }
 
     private static Customers formatCustomer(ResultSet rs) {
