@@ -31,10 +31,6 @@ public class dbHelper {
             username = prop.getProperty("username");
             password = prop.getProperty("password");
             uri = prop.getProperty("uri");
-
-            System.out.println(username);
-            System.out.println(password);
-            System.out.println(uri);
         } catch (Exception err) {
             throw new RuntimeException("Unable to read file");
         }

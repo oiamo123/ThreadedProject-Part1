@@ -144,6 +144,9 @@ public class MainController {
                 }
             }
         });
+
+        createColumns(new Customers(), tvCustomers);
+        tvCustomers.setItems(CustomerDB.getCustomers());
     }
 
     public void createColumns(Object obj, TableView table) {
