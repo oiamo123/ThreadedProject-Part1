@@ -2,6 +2,7 @@ package org.example.demo.services;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.example.demo.models.Bookings;
 import org.example.demo.models.Customers;
 
 import java.sql.ResultSet;
@@ -21,18 +22,8 @@ public class CustomerService {
         dbService.updateData(cust);
     }
 
-    public static ObservableList<Customers> getCustomers(int page) {
-        // Implement your database or API logic to fetch data here
-        // For example, using SQL: SELECT * FROM customers LIMIT PAGE_SIZE OFFSET page * PAGE_SIZE;
-
-        // This is just a placeholder for demo purposes
-        ObservableList<Customers> customers = FXCollections.observableArrayList();
-        // Populate the list with your query result (mock data for now)
-        for (int i = 1; i <= PAGE_SIZE; i++) {
-            Customers customer = new Customers(/* id, name, etc. */);
-            customers.add(customer);
-        }
-        return customers;
+    public static ObservableList<Customers> getCustomers() {
+        return dbService.getData("select * from customers", CustomerService::formatCustomer);
     }
 
     private static Customers formatCustomer(ResultSet rs) {

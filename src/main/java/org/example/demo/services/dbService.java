@@ -14,9 +14,10 @@ import java.util.Properties;
 import java.util.function.Function;
 
 public class dbService {
+
+    // Establish a connection using configuration from the properties file
     public static Connection getConnection() {
         Connection conn = null;
-
         String username;
         String password;
         String uri;
@@ -30,63 +31,70 @@ public class dbService {
             password = prop.getProperty("password");
             uri = prop.getProperty("uri");
         } catch (Exception err) {
-            throw new RuntimeException("Unable to read file");
+            throw new RuntimeException("Unable to read config file");
         }
 
         try {
             conn = DriverManager.getConnection(uri, username, password);
         } catch (Exception err) {
-            throw new RuntimeException(err.getMessage());
+            throw new RuntimeException("Error establishing database connection: " + err.getMessage());
         }
         return conn;
     }
 
+    // Utility to prepare a PreparedStatement with provided parameters
     public static void prepareStatement(PreparedStatement stmt, Object... params) {
         try {
             for (int i = 0; i < params.length; i++) {
                 if (params[i] instanceof String) {
                     stmt.setString(i + 1, (String) params[i]);
-                }
-                else if (params[i] instanceof Integer) {
+                } else if (params[i] instanceof Integer) {
                     stmt.setInt(i + 1, (int) params[i]);
-                }
-                else if (params[i] instanceof Double) {
+                } else if (params[i] instanceof Double) {
                     stmt.setDouble(i + 1, (Double) params[i]);
-                }
-                else if (params[i] instanceof Date) {
+                } else if (params[i] instanceof Date) {
                     stmt.setDate(i + 1, (java.sql.Date) params[i]);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error preparing statement: " + e.getMessage());
         }
     }
 
-    public static <T> ObservableList<T> getData(String query, Function<ResultSet, T> formatter) {
+    // Improved getData method using PreparedStatement and proper resource management
+    public static <T> ObservableList<T> getData(String query, Function<ResultSet, T> formatter, Object... params) {
         ObservableList<T> data = FXCollections.observableArrayList();
-        try {
-            Statement stmt = dbService.getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                data.add(formatter.apply(rs));
+        try (Connection conn = dbService.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Prepare the statement with parameters if provided
+            if (params.length > 0) {
+                prepareStatement(stmt, params);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    data.add(formatter.apply(rs));
+                }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error fetching data: " + e.getMessage());
         }
         return data;
     }
 
+    // Insert data with reflection
     public static void insertData(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
         StringBuilder query = new StringBuilder("INSERT INTO " + obj.getClass().getSimpleName().toLowerCase() + " (");
         StringBuilder placeholders = new StringBuilder(") VALUES (");
-        int fieldIndex = 1; // To track parameter index for PreparedStatement
+        int fieldIndex = 1;
 
         try {
             for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true); // Make private fields accessible
+                fields[i].setAccessible(true);
 
-                // Assume the first field is the auto-generated ID and skip it
+                // Skip ID field if null
                 if (!fields[i].isAnnotationPresent(Id.class) || fields[i].get(obj) == null) {
                     query.append(fields[i].getName());
                     placeholders.append("?");
@@ -96,35 +104,31 @@ public class dbService {
                         placeholders.append(", ");
                     }
 
-                    fieldIndex++; // Increment field index
+                    fieldIndex++;
                 }
             }
 
             // Complete the query
             query.append(placeholders).append(")");
 
-            System.out.println(query.toString());
-            // Prepare statement
-            PreparedStatement stmt = dbService.getConnection().prepareStatement(query.toString());
-            fieldIndex = 1; // Reset the index for prepared statement parameters
+            try (Connection conn = dbService.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true); // Access the field
-
-                // Skip the ID field or null values
-                if (!fields[i].isAnnotationPresent(Id.class) || fields[i].get(obj) == null) {
-                    Object value = unwrapProperty(fields[i].get(obj));
-                    stmt.setObject(fieldIndex++, value);
+                fieldIndex = 1;
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    if (!field.isAnnotationPresent(Id.class) || field.get(obj) == null) {
+                        stmt.setObject(fieldIndex++, unwrapProperty(field.get(obj)));
+                    }
                 }
-            }
 
-            stmt.executeUpdate(); // Execute the insertion
+                stmt.executeUpdate();
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Error inserting data: " + e.getMessage());
         }
     }
 
-    // not sure if this will work or not
     public static void deleteData(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
         StringBuilder query = new StringBuilder("DELETE FROM " + obj.getClass().getSimpleName().toLowerCase() + " WHERE ");
@@ -133,23 +137,26 @@ public class dbService {
             fields[0].setAccessible(true);
             query.append(fields[0].getName()).append("=?");
 
-            PreparedStatement stmt = dbService.getConnection().prepareStatement(query.toString());
-            stmt.setObject(1, unwrapProperty(fields[0].get(obj)));
+            try (Connection conn = dbService.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
-            stmt.executeUpdate();
+                stmt.setObject(1, unwrapProperty(fields[0].get(obj)));
+                stmt.executeUpdate();
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Error deleting data: " + e.getMessage());
         }
     }
 
+    // Update data with reflection
     public static void updateData(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
         StringBuilder query = new StringBuilder("UPDATE " + obj.getClass().getSimpleName().toLowerCase() + " SET ");
-        int fieldIndex = 1; // To track parameter index for PreparedStatement
+        int fieldIndex = 1;
 
         try {
             for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true); // Make fields accessible
+                fields[i].setAccessible(true);
 
                 if (!fields[i].isAnnotationPresent(Id.class)) {
                     query.append(fields[i].getName()).append(" = ?");
@@ -162,45 +169,37 @@ public class dbService {
             // Append the WHERE clause
             query.append(" WHERE ").append(fields[0].getName()).append(" = ?");
 
-            // Prepare the statement
-            PreparedStatement stmt = dbService.getConnection().prepareStatement(query.toString());
+            try (Connection conn = dbService.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query.toString())) {
 
-            // Set values for the PreparedStatement
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true); // Access each field
-                Object value = unwrapProperty(fields[i]); // Get the value
-
-                // Set values for all fields except the ID first
-                if (!fields[i].isAnnotationPresent(Id.class)) {
-                    stmt.setObject(fieldIndex++, value);
+                // Set values for fields
+                for (Field field : fields) {
+                    field.setAccessible(true);
+                    if (!field.isAnnotationPresent(Id.class)) {
+                        stmt.setObject(fieldIndex++, unwrapProperty(field.get(obj)));
+                    }
                 }
+                stmt.setObject(fieldIndex, unwrapProperty(fields[0]));
+
+                stmt.executeUpdate();
             }
-
-            stmt.setObject(fieldIndex, unwrapProperty(fields[0]));
-
-            stmt.executeUpdate(); // Execute the update
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error updating data: " + e.getMessage());
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Error accessing field: " + e.getMessage());
         }
     }
 
+    // Utility to unwrap JavaFX property types
     private static Object unwrapProperty(Object fieldValue) {
-        if (fieldValue instanceof SimpleObjectProperty) {
-            return ((SimpleObjectProperty<?>) fieldValue).get();
-        } else if (fieldValue instanceof SimpleStringProperty) {
-            return ((SimpleStringProperty) fieldValue).get();
-        } else if (fieldValue instanceof SimpleIntegerProperty) {
-            return ((SimpleIntegerProperty) fieldValue).get();
-        } else if (fieldValue instanceof SimpleDoubleProperty) {
-            return ((SimpleDoubleProperty) fieldValue).get();
-        } else if (fieldValue instanceof SimpleFloatProperty) {
-            return ((SimpleFloatProperty) fieldValue).get();
-        } else if (fieldValue instanceof SimpleBooleanProperty) {
-            return ((SimpleBooleanProperty) fieldValue).get();
-        } else if (fieldValue instanceof SimpleLongProperty) {
-            return ((SimpleLongProperty) fieldValue).get();
-        }
-        // If it's not a SimpleXProperty, return the value as is
-        return fieldValue;
+        if (fieldValue == null) return null;  // Handle null values
+        if (fieldValue instanceof SimpleObjectProperty) return ((SimpleObjectProperty<?>) fieldValue).get();
+        if (fieldValue instanceof SimpleStringProperty) return ((SimpleStringProperty) fieldValue).get();
+        if (fieldValue instanceof SimpleIntegerProperty) return ((SimpleIntegerProperty) fieldValue).get();
+        if (fieldValue instanceof SimpleDoubleProperty) return ((SimpleDoubleProperty) fieldValue).get();
+        if (fieldValue instanceof SimpleFloatProperty) return ((SimpleFloatProperty) fieldValue).get();
+        if (fieldValue instanceof SimpleBooleanProperty) return ((SimpleBooleanProperty) fieldValue).get();
+        if (fieldValue instanceof SimpleLongProperty) return ((SimpleLongProperty) fieldValue).get();
+        return fieldValue;  // Return as-is if it's not a JavaFX property type
     }
 }
