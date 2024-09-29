@@ -6,6 +6,8 @@ import org.example.demo.models.Customers;
 import java.sql.ResultSet;
 
 public class CustomerService {
+    private final static int PAGE_SIZE = 10;
+
     public static void insert(Customers cust) {
         dbService.insertData(cust);
     }
@@ -18,8 +20,11 @@ public class CustomerService {
         dbService.updateData(cust);
     }
 
-    public static ObservableList<Customers> getCustomers() {
-        return dbService.getData("select * from customers", CustomerService::formatCustomer);
+    public static ObservableList<Customers> getCustomers(int page) {
+        // Implement pagination in your data fetching logic
+        // For example, if using SQL: SELECT * FROM customers LIMIT ? OFFSET ?
+        String query = "SELECT * FROM customers LIMIT " + PAGE_SIZE + " OFFSET " + (page * PAGE_SIZE);
+        // Fetch and return the paged data from your database
     }
 
     private static Customers formatCustomer(ResultSet rs) {
