@@ -1,5 +1,6 @@
 package org.example.demo.services;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.demo.models.Customers;
 
@@ -21,10 +22,17 @@ public class CustomerService {
     }
 
     public static ObservableList<Customers> getCustomers(int page) {
-        // Implement pagination in your data fetching logic
-        // For example, if using SQL: SELECT * FROM customers LIMIT ? OFFSET ?
-        String query = "SELECT * FROM customers LIMIT " + PAGE_SIZE + " OFFSET " + (page * PAGE_SIZE);
-        // Fetch and return the paged data from your database
+        // Implement your database or API logic to fetch data here
+        // For example, using SQL: SELECT * FROM customers LIMIT PAGE_SIZE OFFSET page * PAGE_SIZE;
+
+        // This is just a placeholder for demo purposes
+        ObservableList<Customers> customers = FXCollections.observableArrayList();
+        // Populate the list with your query result (mock data for now)
+        for (int i = 1; i <= PAGE_SIZE; i++) {
+            Customers customer = new Customers(/* id, name, etc. */);
+            customers.add(customer);
+        }
+        return customers;
     }
 
     private static Customers formatCustomer(ResultSet rs) {

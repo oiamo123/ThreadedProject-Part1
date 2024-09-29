@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import org.example.demo.models.Customers;
 import org.example.demo.services.CustomerService;
@@ -66,15 +68,27 @@ public class MainController {
         new Thread(task).start();
     }
 
-    /**
-     * Checks if the user has scrolled to the bottom of the TableView.
-     * This triggers the lazy loading of the next page when the user scrolls near the end.
-     */
     private boolean isScrollAtBottom() {
-        // Ensure there's data in the TableView and the last row is fully visible
-        return tvCustomers.getItems().size() > 0 &&
-                tvCustomers.getVisibleLeafIndex(tvCustomers.getItems().size() - 1) != -1;
+        // Get the vertical scrollbar from the TableView
+        ScrollBar scrollBar = getVerticalScrollbar(tvCustomers);
+
+        // Check if the scroll position is at the bottom
+        return scrollBar != null && scrollBar.getValue() == scrollBar.getMax();
     }
+
+    private ScrollBar getVerticalScrollbar(TableView<?> table) {
+        // The TableView might have a ScrollBar in its children, so we traverse the children nodes to find it
+        for (Node node : table.lookupAll(".scroll-bar")) {
+            if (node instanceof ScrollBar) {
+                ScrollBar bar = (ScrollBar) node;
+                if (bar.getOrientation() == Orientation.VERTICAL) {
+                    return bar;  // Return the vertical scrollbar
+                }
+            }
+        }
+        return null;  // No vertical scrollbar found
+    }
+
 
     /**
      * Ensures all FXML elements are properly injected.
