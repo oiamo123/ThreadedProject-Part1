@@ -4,6 +4,7 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.example.demo.TravelExpertsApplication;
+import org.example.demo.models.Customers;
 import org.example.demo.models.Id;
 
 import java.io.InputStream;
@@ -148,6 +149,52 @@ public class dbService {
         }
     }
 
+    public static int deleteCustomer(int customerId) throws SQLException{
+        int numRows = 0;
+        Connection conn = getConnection();
+        String sql = "DELETE FROM customers WHERE CustomerId = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, customerId);
+        numRows = stmt.executeUpdate();
+        conn.close();
+        return numRows;
+    }
+
+    public static int updateCustomer(int customerId, Customers customer) throws SQLException {
+        int numRows = 0; // number of rows affected
+        Connection conn = getConnection();
+        String sql = "UPDATE customers SET " +
+                "       CustomerId = ?, " +
+                "       CustFirstName = ?, " +
+                "       CustLastName = ?, " +
+                "       CustAddress = ?, " +
+                "       CustCity = ?, " +
+                "       CustProvince = ?, " +
+                "       CustPostal = ?, " +
+                "       CustCountry = ?" +
+                "       CustHomePhone = ?" +
+                "       CustBusPhone= ?" +
+                "       CustEmail= ?" +
+                "       AgentId= ?" +
+                "     WHERE CustomerId = ?";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, customer.getCustomerId());
+        stmt.setString(2, customer.getCustFirstName());
+        stmt.setString(3, customer.getCustLastName());
+        stmt.setString(4, customer.getCustAddress());
+        stmt.setString(5, customer.getCustCity());
+        stmt.setString(6, customer.getCustProv());
+        stmt.setString(7, customer.getCustPostal());
+        stmt.setString(8, customer.getCustCountry());
+        stmt.setString(9, customer.getCustHomePhone());
+        stmt.setString(10, customer.getCustBusPhone());
+        stmt.setString(11, customer.getCustEmail());
+        stmt.setInt(12, customer.getAgentId());
+        numRows = stmt.executeUpdate();
+        conn.close();
+        return numRows;
+    }
+
     // Update data with reflection
     public static void updateData(Object obj) {
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -189,6 +236,33 @@ public class dbService {
             throw new RuntimeException("Error accessing field: " + e.getMessage());
         }
     }
+
+    public static ObservableList<Customers> getCustomers() throws SQLException {
+        ObservableList<Customers> customers = FXCollections.observableArrayList();
+        Customers customer; // for processing data
+        Connection conn = getConnection();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from customers");
+        while(rs.next()){
+            customer = new Customers(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getString(8),
+                    rs.getString(9),
+                    rs.getString(10),
+                    rs.getString(11),
+                    rs.getInt(12)
+            );
+            customers.add(customer);
+        }
+        conn.close();
+        return customers;
+    } // end getAgents
 
     // Utility to unwrap JavaFX property types
     private static Object unwrapProperty(Object fieldValue) {

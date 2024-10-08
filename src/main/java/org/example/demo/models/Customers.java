@@ -57,6 +57,12 @@ public class Customers {
         this.AgentId = new SimpleIntegerProperty();
     }
 
+    public Customers(String customerId, String text, String text1, String text2, String text3, String text4, String text5, String text6, String text7, String text8) {
+    }
+
+    public Customers(int customerId, String string, String string1, String string2, String string3, String string4, String string5, String string6, String string7, String string8, String string9, int anInt1) {
+    }
+
     public int getCustomerId() {
         return CustomerId.get();
     }
